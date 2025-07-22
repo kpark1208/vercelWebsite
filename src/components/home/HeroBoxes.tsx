@@ -33,11 +33,11 @@ export const Hero223 = () => {
         <Boxes className="scale-150" />
         <h1 className="relative z-99 max-w-4xl text-center md:text-7xl text-5xl font-normal tracking-normal leading-tight md:leading-[1.1]">
           <div className="fadeInUp1 mb-4 md:mb-6">Hi, I am</div>
-          <div className="fadeInUp2 font-extrabold md:text-8xl text-6xl mb-4 md:mb-6">Hyeonjoon Park</div>
+          <div className="fadeInUp2 font-extrabold md:text-8xl text-6xl mb-4 md:mb-6">Hyeonjae Park</div>
           <div className="fadeInUp3 font-semibold text-primary md:text-6xl text-4xl mb-2 md:mb-4">Your Software Developer.</div>
         </h1>
         <p className="relative z-99 mt-4 max-w-xl text-center text-lg text-muted-foreground">
-          Quick learner, hard worker, and a team player.
+          CMU.
         </p>
         <div className="realtive z-99 mt-10 flex items-center justify-center gap-4">
           <Button
