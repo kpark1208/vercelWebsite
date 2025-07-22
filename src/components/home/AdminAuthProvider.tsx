@@ -12,7 +12,7 @@ export default function AdminAuthProvider({ children }: { children: React.ReactN
   // Listen for secret shortcut
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "p") {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "u") {
         setShowLogin(true);
       }
     };

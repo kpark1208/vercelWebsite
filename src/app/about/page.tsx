@@ -150,11 +150,11 @@ export default function About() {
           <h2 className="text-2xl font-semibold mb-6 text-center">Get In Touch</h2>
           <div className="flex flex-col items-center gap-4">
             <div className="flex flex-wrap justify-center gap-6">
-              <a href="mailto:phjoon@umich.edu" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+              <a href="mailto:hyeonjap@andrew.cmu.edu" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
                 <Mail className="h-5 w-5 text-primary" />
-                <span>phjoon@umich.edu</span>
+                <span>hyeonjap@andrew.cmu.edu</span>
               </a>
-              <a href="https://github.com/phjoon1012" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+              <a href="https://github.com/kpark1208" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
                 <Github className="h-5 w-5 text-primary" />
                 <span>GitHub</span>
               </a>

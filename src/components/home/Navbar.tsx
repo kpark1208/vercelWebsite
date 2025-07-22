@@ -22,7 +22,7 @@ const NAV_ITEMS = [
   { name: "About Me", link: "/about" },
   { name: "My Work", link: "/work" },
   { name: "My Hobbies", link: "/hobbies" },
-  { name: "Contact Me", link: "/contact" },
+  { name: "Contact Me", link: "/contacts" },
 ];
 
 const Navbar = () => {
@@ -153,16 +153,15 @@ const MobileNav = ({
           <ul className="bg-background text-foreground w-full py-4">
             {NAV_ITEMS.map((navItem, idx) => (
               <li key={idx}>
-                <Link href={navItem.link}>
-                  <a
-                    className={`text-foreground flex items-center border-l-[3px] px-6 py-4 text-sm font-medium transition-all duration-75 ${
-                      pathname === navItem.link
-                        ? "border-foreground text-foreground"
-                        : "text-muted-foreground hover:text-foreground border-transparent"
-                    }`}
-                  >
-                    {navItem.name}
-                  </a>
+                <Link
+                  href={navItem.link}
+                  className={`text-foreground flex items-center border-l-[3px] px-6 py-4 text-sm font-medium transition-all duration-75 ${
+                    pathname === navItem.link
+                      ? "border-foreground text-foreground"
+                      : "text-muted-foreground hover:text-foreground border-transparent"
+                  }`}
+                >
+                  {navItem.name}
                 </Link>
               </li>
             ))}
