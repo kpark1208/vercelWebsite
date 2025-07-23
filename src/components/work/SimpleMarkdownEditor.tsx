@@ -21,7 +21,7 @@ import {
   Image,
   FileCode
 } from "lucide-react";
-import MarkdownRenderer from "@/components/work/MarkdownRenderer";
+import MarkdownRenderer from "./MarkdownRenderer";
 
 interface SimpleMarkdownEditorProps {
   value: string;

@@ -16,7 +16,7 @@ export default function About() {
   const resumeInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>, 
     setUrl: React.Dispatch<React.SetStateAction<string>>
   ) => {
     const file = e.target.files?.[0];

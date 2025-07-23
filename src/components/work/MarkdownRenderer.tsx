@@ -1,24 +1,16 @@
 "use client";
 
-import SimpleMathRenderer from "@/components/work/SimpleMathRenderer";
+import ReactMarkdown from 'react-markdown';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 
-interface MarkdownRendererProps {
-  content: string;
-  className?: string;
-}
-
-export default function MarkdownRenderer({ content, className = "" }: MarkdownRendererProps) {
-  if (!content || content.trim() === '') {
-    return (
-      <div className="text-muted-foreground italic">
-        Content coming soon...
-      </div>
-    );
-  }
-
+export default function MarkdownRenderer({ content }: { content: string }) {
   return (
-    <div className={`prose prose-sm max-w-none [&_ul]:list-disc [&_ul]:list-inside [&_li]:ml-4 ${className}`}>
-      <SimpleMathRenderer content={content} />
-    </div>
+    <ReactMarkdown
+      children={content}
+      remarkPlugins={[remarkMath]}
+      rehypePlugins={[rehypeKatex]}
+    />
   );
 } 

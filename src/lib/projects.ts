@@ -9,7 +9,8 @@ export interface Project {
   achievements: string[]
   categories: string[]
   slug: string
-  project_date?: string
+  start_date?: string
+  end_date?: string
   project_location?: string
   created_at?: string
   updated_at?: string
@@ -123,53 +124,30 @@ export function parseProjectDescription(description: string) {
   return sections
 }
 
-// Helper function to format project dates
-export function formatProjectDate(dateString?: string, location?: string): string {
-  if (!dateString) return ''
-  
+// Helper function to format project dates (start and end)
+export function formatProjectDate(startDate?: string, endDate?: string, location?: string): string {
+  if (!startDate && !endDate) return '';
   try {
-    // Check if it's a date range (contains "-")
-    if (dateString.includes('-')) {
-      const [startDate, endDate] = dateString.split('-').map(d => d.trim())
-      
-      const start = new Date(startDate)
-      const end = new Date(endDate)
-      
-      const startFormatted = start.toLocaleDateString('en-US', {
-        month: 'short',
-        year: 'numeric'
-      })
-      
-      const endFormatted = end.toLocaleDateString('en-US', {
-        month: 'short',
-        year: 'numeric'
-      })
-      
-      const dateRange = `${startFormatted} - ${endFormatted}`
-      
-      // Add location if provided
-      if (location) {
-        return `${dateRange}, ${location}`
-      }
-      
-      return dateRange
-    } else {
-      // Single date
-      const date = new Date(dateString)
-      const formattedDate = date.toLocaleDateString('en-US', {
-        month: 'short',
-        year: 'numeric'
-      })
-      
-      // Add location if provided
-      if (location) {
-        return `${formattedDate}, ${location}`
-      }
-      
-      return formattedDate
+    const format = (dateStr?: string) =>
+      dateStr
+        ? new Date(dateStr.replace(/\//g, '-')).toLocaleDateString('en-US', {
+            month: 'short',
+            year: 'numeric',
+          })
+        : '';
+    const startFormatted = format(startDate);
+    const endFormatted = format(endDate);
+
+    let dateRange = startFormatted;
+    if (endFormatted) {
+      dateRange += ` - ${endFormatted}`;
     }
-  } catch (error) {
-    return dateString
+    if (location) {
+      return `${dateRange}, ${location}`;
+    }
+    return dateRange;
+  } catch {
+    return [startDate, endDate].filter(Boolean).join(' - ');
   }
 }
 

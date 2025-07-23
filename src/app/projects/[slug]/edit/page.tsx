@@ -21,6 +21,18 @@ interface EditProjectPageProps {
   }>;
 }
 
+function calculateDurationInMonths(start: string, end: string): string {
+  if (!start || !end) return '';
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+  let months =
+    (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+    (endDate.getMonth() - startDate.getMonth());
+  if (endDate.getDate() >= startDate.getDate()) months += 1;
+  if (months < 1) months = 1;
+  return `${months} month${months > 1 ? 's' : ''}`;
+}
+
 export default function EditProjectPage({ params }: EditProjectPageProps) {
   const { isAdmin } = useContext(AdminAuthContext);
   const router = useRouter();
@@ -33,7 +45,8 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
     technologies: [] as string[],
     categories: [] as string[],
     duration: "",
-    project_date: "",
+    start_date: "",
+    end_date: "",
     project_location: "",
     achievements: [] as string[],
     // Modular content fields
@@ -70,7 +83,8 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
             technologies: projectData.technologies,
             categories: projectData.categories,
             duration: projectData.duration,
-            project_date: projectData.project_date || "",
+            start_date: projectData.start_date || "",
+            end_date: projectData.end_date || "",
             project_location: projectData.project_location || "",
             achievements: projectData.achievements,
             // Modular content fields
@@ -207,7 +221,10 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          duration: calculateDurationInMonths(formData.start_date, formData.end_date),
+        }),
       });
 
       console.log('Response status:', response.status);
@@ -287,24 +304,34 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
                   />
                 </div>
                 
-                <div>
-                  <Label htmlFor="duration">Duration</Label>
+                <div className="space-y-2">
+                  <Label>Duration</Label>
                   <Input
-                    id="duration"
-                    value={formData.duration}
-                    onChange={(e) => handleInputChange("duration", e.target.value)}
-                    placeholder="e.g., 3 months, 6 weeks"
+                    value={calculateDurationInMonths(formData.start_date, formData.end_date)}
+                    readOnly
+                    placeholder="Duration will be calculated"
                   />
                 </div>
                 
                 <div>
-                  <Label htmlFor="project_date">Project Date</Label>
+                  <Label htmlFor="start_date">Start Date</Label>
                   <Input
-                    id="project_date"
-                    type="text"
-                    value={formData.project_date}
-                    onChange={(e) => handleInputChange("project_date", e.target.value)}
-                    placeholder="e.g., 2023-01-01 - 2023-04-30"
+                    id="start_date"
+                    type="date"
+                    value={formData.start_date}
+                    onChange={(e) => handleInputChange("start_date", e.target.value)}
+                    placeholder="e.g., 2023-01-01"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="end_date">End Date</Label>
+                  <Input
+                    id="end_date"
+                    type="date"
+                    value={formData.end_date}
+                    onChange={(e) => handleInputChange("end_date", e.target.value)}
+                    placeholder="e.g., 2023-04-30"
                   />
                 </div>
                 

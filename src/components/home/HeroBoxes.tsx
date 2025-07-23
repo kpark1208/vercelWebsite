@@ -25,6 +25,16 @@ const fadeInSeq = `
 `;
 
 export const Hero223 = () => {
+  // Function to download the resume
+  const handleDownloadCV = () => {
+    const link = document.createElement('a');
+    link.href = '/resume.pdf';
+    link.download = 'Hyeonjae_Park_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <section className="py-32 max-w-5xl mx-auto">
       <style>{fadeInSeq}</style>
@@ -37,12 +47,13 @@ export const Hero223 = () => {
           <div className="fadeInUp3 font-semibold text-primary md:text-6xl text-4xl mb-2 md:mb-4">Your Software Developer.</div>
         </h1>
         <p className="relative z-99 mt-4 max-w-xl text-center text-lg text-muted-foreground">
-          CMU.
+          A passionate computer science student at Carnegie Mellon University.
         </p>
         <div className="realtive z-99 mt-10 flex items-center justify-center gap-4">
           <Button
             variant="default"
             className="group text-md flex w-fit items-center justify-center gap-2 rounded-full px-4 py-1 tracking-tight"
+            onClick={handleDownloadCV}
           >
             <span>Download CV</span>
             <ArrowRight className="size-4 -rotate-45 transition-all ease-out group-hover:ml-3 group-hover:rotate-0" />

@@ -1,5 +1,7 @@
 "use client";
 
+{/*PROJECT DISPLAY PAGE UNDER 'MY WORK' SECTION*/}
+
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
 
@@ -22,6 +24,20 @@ function parseDurationToHours(duration: string): number {
   if (lower.includes('day')) return num * 8; // assume 8 hours/day
   if (lower.includes('hour')) return num;
   return 0;
+}
+
+// Helper to calculate duration in months
+function calculateDurationInMonths(start: string, end: string): string {
+  if (!start || !end) return '';
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+  let months =
+    (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+    (endDate.getMonth() - startDate.getMonth());
+  // If end day is after start day, count as an extra month
+  if (endDate.getDate() >= startDate.getDate()) months += 1;
+  if (months < 1) months = 1;
+  return `${months} month${months > 1 ? 's' : ''}`;
 }
 
 const Blog17 = () => {
@@ -313,27 +329,40 @@ const Blog17 = () => {
               projects.map((item) => (
                 <React.Fragment key={item.id}>
                   <Link href={`/projects/${item.slug}`} className="group block hover:bg-muted/30 p-6 rounded-none transition-colors border-t border-b border-border ">
+                    {/* Categories Row - now above the title */}
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      {item.categories.map((category, index) => (
+                        <span
+                          key={index}
+                          className="text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-md"
+                        >
+                          {category}
+                        </span>
+                      ))}
+                    </div>
                     {/* Header Row */}
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-start gap-3 flex-1 min-w-0">
                         <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
                           {item.title}
                         </h3>
-                        <div className="flex items-center gap-2 flex-shrink-0">
-                          {item.categories.map((category, index) => (
-                            <span
-                              key={index}
-                              className="text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-md"
-                            >
-                              {category}
-                            </span>
-                          ))}
-                        </div>
+                        {/* Remove categories from here */}
                       </div>
+                      {/*display start and end date if available, otherwise display duration*/}
                       <div className="flex flex-col items-end gap-1 text-xs text-muted-foreground flex-shrink-0 ml-4">
-                        {item.project_date && (
-                          <span>{formatProjectDate(item.project_date, item.project_location)}</span>
+                        {/* Start / End Date */}
+                        {(item.start_date || item.end_date) && (
+                          <span>
+                            {item.start_date ? new Date(item.start_date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : ''}
+                            {item.start_date && item.end_date ? ' ~ ' : ''}
+                            {item.end_date ? new Date(item.end_date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : ''}
+                          </span>
                         )}
+                        {/* Location */}
+                        {item.project_location && (
+                          <span>{item.project_location}</span>
+                        )}
+                        {/* Duration */}
                         <span className="text-primary font-medium">
                           {item.duration}
                         </span>
@@ -348,7 +377,7 @@ const Blog17 = () => {
                       })()}
                     </p>
                     
-                    {/* Technologies */}
+                    {/* Technologies - stays below description */}
                     <div className="flex flex-wrap gap-1.5 mb-4">
                       {item.technologies.map((tech, index) => (
                         <span
@@ -359,7 +388,6 @@ const Blog17 = () => {
                         </span>
                       ))}
                     </div>
-                    
                     {/* Key Achievements - More Prominent */}
                     <div className="space-y-2">
                       <h4 className="text-sm font-bold text-foreground uppercase tracking-wide">Key Achievements</h4>

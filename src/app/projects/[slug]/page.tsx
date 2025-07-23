@@ -117,17 +117,19 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               <span>
-                {project.project_date ? formatProjectDate(project.project_date, project.project_location) : project.duration}
+                {(project.start_date || project.end_date)
+                  ? formatProjectDate(project.start_date, project.end_date, project.project_location)
+                  : project.duration}
               </span>
             </div>
             <div className="flex items-center gap-2">
               <Users className="h-4 w-4" />
-              <span>Team Project</span>
+              <span>Solo Project</span>
             </div>
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <Zap className="h-4 w-4" />
               <span>Production Ready</span>
-            </div>
+            </div> */}
             <div className="flex items-center gap-2">
               <Star className="h-4 w-4" />
               <span>Featured</span>

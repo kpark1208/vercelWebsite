@@ -21,6 +21,7 @@ export default function About() {
     try {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("target", "profile.jpg"); // <--- Add this line
       const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
@@ -43,6 +44,7 @@ export default function About() {
     try {
       const formData = new FormData();
       formData.append("file", file);
+      formData.append("target", "resume.pdf"); // <--- Add this line
       const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
@@ -62,7 +64,7 @@ export default function About() {
     // Create a link element to trigger the download
     const link = document.createElement('a');
     link.href = '/resume.pdf';
-    link.download = 'Hyeonjoon_Park_Resume.pdf';
+    link.download = 'Hyeonjae_Park_Resume.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -76,7 +78,7 @@ export default function About() {
           <div className="w-32 h-32 mb-4 rounded-full overflow-hidden border-4 border-primary shadow-lg relative">
             <Image
               src={profilePic}
-              alt="Hyeonjoon Park"
+              alt="Hyeonjae Park"
               width={128}
               height={128}
               className="object-cover w-full h-full"
@@ -98,8 +100,8 @@ export default function About() {
               onChange={handleProfilePicChange}
             />
           </div>
-          <h1 className="text-3xl font-bold mb-1">Hyeonjoon Park</h1>
-          <p className="text-primary font-medium mb-2">Software Developer & AI Engineer</p>
+          <h1 className="text-3xl font-bold mb-1">Hyeonjae Park</h1>
+          <p className="text-primary font-medium mb-2">Aspiring Software Developer from <b>CS@CMU</b></p>
           <p className="text-muted-foreground text-center max-w-xl">
             Passionate about building scalable web apps, intelligent AI systems, and immersive games. I love solving real-world problems with code and creativity.
           </p>

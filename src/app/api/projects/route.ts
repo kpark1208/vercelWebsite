@@ -47,7 +47,8 @@ export async function POST(request: NextRequest) {
         technologies: body.technologies?.filter((t: string) => t.trim()) || [],
         categories: body.categories?.filter((c: string) => c.trim()) || [],
         duration: body.duration || '',
-        project_date: body.project_date || null,
+        start_date: body.start_date || null,
+        end_date: body.end_date || null,
         project_location: body.project_location || null,
         achievements: body.achievements?.filter((a: string) => a.trim()) || [],
         
@@ -73,6 +74,7 @@ export async function POST(request: NextRequest) {
         code_snippets: body.code_snippets || null,
         
         // Content metadata
+        last_edited: new Date().toISOString(),
         content_version: 1,
         
         created_at: new Date().toISOString(),

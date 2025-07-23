@@ -143,28 +143,28 @@ const HeroStats = () => {
             {[
               {
                 img: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/block-1.svg",
-                title: "Traveling Salesman Problem Solver",
-                desc: "An interactive visualizer and solver for the classic TSP using multiple algorithms.",
+                title: "Python-based Billiard Game",
+                desc: "Python-based pool game with collision detection, friction modeling, and cue control using object-oriented programming.",
                 link: "/projects/traveling-salesman-problem-solver"
               },
               {
                 img: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/block-2.svg",
-                title: "Euchre Card Game",
-                desc: "A full-featured online Euchre game with multiplayer support and smart AI.",
-                link: "/projects/euchre-card-game"
-              },
-              {
-                img: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/block-3.svg",
-                title: "Traveling Salesman Problem Solver",
-                desc: "Explore advanced algorithms and data visualization in this TSP project.",
-                link: "/projects/traveling-salesman-problem-solver"
-              },
-              {
-                img: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/block-4.svg",
-                title: "Euchre Card Game",
-                desc: "Play Euchre online with friends or AI, featuring robust game logic.",
+                title: "Web Development Project for Personal Website",
+                desc: "A full-featured personal website using React and Next.js.",
                 link: "/projects/euchre-card-game"
               }
+              // {
+              //   img: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/block-3.svg",
+              //   title: "Traveling Salesman Problem Solver",
+              //   desc: "Explore advanced algorithms and data visualization in this TSP project.",
+              //   link: "/projects/traveling-salesman-problem-solver"
+              // },
+              // {
+              //   img: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/block-4.svg",
+              //   title: "Euchre Card Game",
+              //   desc: "Play Euchre online with friends or AI, featuring robust game logic.",
+              //   link: "/projects/euchre-card-game"
+              // }
             ].map((card, i) => (
               <Link
                 key={i}

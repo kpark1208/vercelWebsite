@@ -1,5 +1,7 @@
 "use client";
 
+{/*CREATE NEW PROJECT PAGE UNDER 'MY WORK' SECTION*/}
+
 import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
@@ -17,9 +19,22 @@ interface ProjectFormData {
   technologies: string[];
   categories: string[];
   duration: string;
-  project_date: string;
+  start_date: string;
+  end_date: string;
   project_location: string;
   achievements: string[];
+}
+
+function calculateDurationInMonths(start: string, end: string): string {
+  if (!start || !end) return '';
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+  let months =
+    (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+    (endDate.getMonth() - startDate.getMonth());
+  if (endDate.getDate() >= startDate.getDate()) months += 1;
+  if (months < 1) months = 1;
+  return `${months} month${months > 1 ? 's' : ''}`;
 }
 
 export default function NewProject() {
@@ -33,7 +48,8 @@ export default function NewProject() {
     technologies: [''],
     categories: [''],
     duration: '',
-    project_date: '',
+    start_date: '',
+    end_date: '',
     project_location: '',
     achievements: ['']
   });
@@ -93,6 +109,7 @@ export default function NewProject() {
         },
         body: JSON.stringify({
           ...formData,
+          duration: calculateDurationInMonths(formData.start_date, formData.end_date),
           technologies: formData.technologies.filter(t => t.trim()),
           categories: formData.categories.filter(c => c.trim()),
           achievements: formData.achievements.filter(a => a.trim())
@@ -165,34 +182,43 @@ export default function NewProject() {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="duration">Duration</Label>
+                  <Label>Duration</Label>
                   <Input
-                    id="duration"
-                    value={formData.duration}
-                    onChange={(e) => handleInputChange('duration', e.target.value)}
-                    placeholder="e.g., 3 months"
+                    value={calculateDurationInMonths(formData.start_date, formData.end_date)}
+                    readOnly
+                    placeholder="Duration will be calculated"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="project_date">Project Date</Label>
+                  <Label htmlFor="start_date">Start Date</Label>
                   <Input
-                    id="project_date"
+                    id="start_date"
                     type="date"
-                    value={formData.project_date}
-                    onChange={(e) => handleInputChange('project_date', e.target.value)}
+                    value={formData.start_date}
+                    onChange={(e) => handleInputChange('start_date', e.target.value)}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="project_location">Location</Label>
+                  <Label htmlFor="end_date">End Date</Label>
                   <Input
-                    id="project_location"
-                    value={formData.project_location}
-                    onChange={(e) => handleInputChange('project_location', e.target.value)}
-                    placeholder="e.g., Remote, NYC"
+                    id="end_date"
+                    type="date"
+                    value={formData.end_date}
+                    onChange={(e) => handleInputChange('end_date', e.target.value)}
                   />
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="project_location">Location</Label>
+                <Input
+                  id="project_location"
+                  value={formData.project_location}
+                  onChange={(e) => handleInputChange('project_location', e.target.value)}
+                  placeholder="e.g., Remote, NYC"
+                />
               </div>
             </div>
 
