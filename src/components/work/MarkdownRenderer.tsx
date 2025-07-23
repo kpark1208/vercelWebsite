@@ -8,9 +8,10 @@ import 'katex/dist/katex.min.css';
 export default function MarkdownRenderer({ content }: { content: string }) {
   return (
     <ReactMarkdown
-      children={content}
       remarkPlugins={[remarkMath]}
       rehypePlugins={[rehypeKatex]}
-    />
+    >
+      {content}
+    </ReactMarkdown>
   );
 } 
