@@ -122,6 +122,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   : project.duration}
               </span>
             </div>
+            {project.project_location && (
+              <div className="flex items-center gap-2">
+                <MapPin className="h-4 w-4" />
+                <span>{project.project_location}</span>
+              </div>
+            )}
             <div className="flex items-center gap-2">
               <Users className="h-4 w-4" />
               <span>Solo Project</span>
@@ -194,10 +200,27 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             icon={<ExternalLink className="h-6 w-6" />}
           >
             <div className="flex flex-wrap gap-4">
-              <Button variant="outline" className="flex items-center gap-2">
-                <Github className="h-4 w-4" />
-                View on GitHub
-              </Button>
+              {project.github_url ? (
+                <Button 
+                  variant="outline" 
+                  className="flex items-center gap-2"
+                  asChild
+                >
+                  <a href={project.github_url} target="_blank" rel="noopener noreferrer">
+                    <Github className="h-4 w-4" />
+                    View on GitHub
+                  </a>
+                </Button>
+              ) : (
+                <Button 
+                  variant="outline" 
+                  className="flex items-center gap-2"
+                  disabled
+                >
+                  <Github className="h-4 w-4" />
+                  GitHub Link Not Available
+                </Button>
+              )}
               {/* Add more project links as needed */}
             </div>
           </ProjectSection>

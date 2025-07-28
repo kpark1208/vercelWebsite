@@ -48,6 +48,7 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
     start_date: "",
     end_date: "",
     project_location: "",
+    github_url: "",
     achievements: [] as string[],
     // Modular content fields
     overview: "",
@@ -86,6 +87,7 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
             start_date: projectData.start_date || "",
             end_date: projectData.end_date || "",
             project_location: projectData.project_location || "",
+            github_url: projectData.github_url || "",
             achievements: projectData.achievements,
             // Modular content fields
             overview: projectData.overview || "",
@@ -342,6 +344,16 @@ export default function EditProjectPage({ params }: EditProjectPageProps) {
                     value={formData.project_location}
                     onChange={(e) => handleInputChange("project_location", e.target.value)}
                     placeholder="e.g., San Francisco, CA"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="github_url">GitHub Repository URL</Label>
+                  <Input
+                    id="github_url"
+                    value={formData.github_url}
+                    onChange={(e) => handleInputChange("github_url", e.target.value)}
+                    placeholder="e.g., https://github.com/username/repository"
                   />
                 </div>
               </CardContent>

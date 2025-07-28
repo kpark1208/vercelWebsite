@@ -22,6 +22,7 @@ interface ProjectFormData {
   start_date: string;
   end_date: string;
   project_location: string;
+  github_url: string;
   achievements: string[];
 }
 
@@ -51,6 +52,7 @@ export default function NewProject() {
     start_date: '',
     end_date: '',
     project_location: '',
+    github_url: '',
     achievements: ['']
   });
 
@@ -218,6 +220,16 @@ export default function NewProject() {
                   value={formData.project_location}
                   onChange={(e) => handleInputChange('project_location', e.target.value)}
                   placeholder="e.g., Remote, NYC"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="github_url">GitHub Repository URL</Label>
+                <Input
+                  id="github_url"
+                  value={formData.github_url}
+                  onChange={(e) => handleInputChange('github_url', e.target.value)}
+                  placeholder="e.g., https://github.com/username/repository"
                 />
               </div>
             </div>

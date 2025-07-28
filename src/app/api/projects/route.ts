@@ -50,6 +50,7 @@ export async function POST(request: NextRequest) {
         start_date: body.start_date || null,
         end_date: body.end_date || null,
         project_location: body.project_location || null,
+        github_url: body.github_url || null,
         achievements: body.achievements?.filter((a: string) => a.trim()) || [],
         
         // Modular content sections
