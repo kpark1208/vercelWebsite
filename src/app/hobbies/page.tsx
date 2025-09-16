@@ -47,7 +47,7 @@ export default function About() {
         <div className="relative">
           <Image
             src={profilePic}
-            alt="Hyeonjoon Park"
+            alt="Hyeonjae Park"
             width={160}
             height={160}
             className="rounded-full object-cover border-4 border-primary shadow-md"
@@ -73,7 +73,7 @@ export default function About() {
         </div>
 
         <div className="text-center md:text-left">
-          <h1 className="text-4xl font-bold mb-2">Hyeonjoon Park</h1>
+          <h1 className="text-4xl font-bold mb-2">Hyeonjae Park</h1>
           <p className="text-lg text-primary font-semibold">Software Developer & AI Engineer</p>
           <p className="text-muted-foreground mt-2 max-w-md">
             Passionate about scalable web apps, intelligent systems, and immersive games. I love solving real-world problems with code and creativity.
@@ -132,13 +132,13 @@ export default function About() {
           <div className="flex flex-wrap justify-center gap-6">
             <a href="mailto:phjoon@umich.edu" className="flex items-center gap-2 hover:text-primary">
               <Mail className="w-5 h-5" />
-              <span>phjoon@umich.edu</span>
+              <span>hyeonjap@andrew.cmu.edu</span>
             </a>
-            <a href="https://github.com/phjoon1012" className="flex items-center gap-2 hover:text-primary" target="_blank" rel="noreferrer">
+            <a href="https://github.com/kpark1208" className="flex items-center gap-2 hover:text-primary" target="_blank" rel="noreferrer">
               <Github className="w-5 h-5" />
               <span>GitHub</span>
             </a>
-            <a href="https://linkedin.com/in/hyeonjoon-park-0000000000" className="flex items-center gap-2 hover:text-primary" target="_blank" rel="noreferrer">
+            <a href="https://www.linkedin.com/in/hyeonjae-park-71464635b/" className="flex items-center gap-2 hover:text-primary" target="_blank" rel="noreferrer">
               <Linkedin className="w-5 h-5" />
               <span>LinkedIn</span>
             </a>
