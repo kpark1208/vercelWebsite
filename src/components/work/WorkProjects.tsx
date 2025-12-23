@@ -12,7 +12,17 @@ import { AdminAuthContext } from "@/components/home/AdminAuthProvider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Search, X, Plus } from "lucide-react";
+import { Search, X, Plus, Trash2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 // Helper to parse duration string to hours
 function parseDurationToHours(duration: string): number {
@@ -49,10 +59,17 @@ const Blog17 = () => {
   const [selectedCategory, setSelectedCategory] = useState("All Articles");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
+  const [deleting, setDeleting] = useState(false);
   
   const searchInputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
   const { isAdmin } = React.useContext(AdminAuthContext);
+  
+  // Check if we're in dev mode (localhost)
+  const isDevMode = typeof window !== 'undefined' && 
+    (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
   // Load initial data
   useEffect(() => {
@@ -198,6 +215,54 @@ const Blog17 = () => {
     setSelectedSuggestionIndex(-1);
   };
 
+  // Handle delete project
+  const handleDeleteClick = (project: Project, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setProjectToDelete(project);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!projectToDelete) return;
+    
+    setDeleting(true);
+    try {
+      const response = await fetch(`/api/projects/${projectToDelete.slug}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('Non-JSON response:', text);
+        throw new Error(`Server returned non-JSON response. Status: ${response.status}`);
+      }
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || `Failed to delete project (${response.status})`);
+      }
+
+      const result = await response.json();
+      console.log('Delete successful:', result);
+
+      // Remove project from local state
+      setProjects(prev => prev.filter(p => p.id !== projectToDelete.id));
+      setDeleteDialogOpen(false);
+      setProjectToDelete(null);
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      alert(error instanceof Error ? error.message : 'Failed to delete project. Please try again.');
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   if (loading) {
     return (
       <section className="py-32">
@@ -328,26 +393,38 @@ const Blog17 = () => {
             {projects.length > 0 ? (
               projects.map((item) => (
                 <React.Fragment key={item.id}>
-                  <Link href={`/projects/${item.slug}`} className="group block hover:bg-muted/30 p-6 rounded-none transition-colors border-t border-b border-border ">
-                    {/* Categories Row - now above the title */}
-                    <div className="flex flex-wrap gap-1.5 mb-2">
-                      {item.categories.map((category, index) => (
-                        <span
-                          key={index}
-                          className="text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-md"
-                        >
-                          {category}
-                        </span>
-                      ))}
-                    </div>
-                    {/* Header Row */}
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-start gap-3 flex-1 min-w-0">
-                        <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
-                          {item.title}
-                        </h3>
-                        {/* Remove categories from here */}
+                  <div className="group relative hover:bg-muted/30 p-6 rounded-none transition-colors border-t border-b border-border">
+                    {/* Dev Mode Delete Button */}
+                    {isDevMode && isAdmin && (
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={(e) => handleDeleteClick(item, e)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                    <Link href={`/projects/${item.slug}`} className="block">
+                      {/* Categories Row - now above the title */}
+                      <div className="flex flex-wrap gap-1.5 mb-2">
+                        {item.categories.map((category, index) => (
+                          <span
+                            key={index}
+                            className="text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-md"
+                          >
+                            {category}
+                          </span>
+                        ))}
                       </div>
+                      {/* Header Row */}
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-start gap-3 flex-1 min-w-0">
+                          <h3 className="text-xl font-semibold text-foreground group-hover:text-primary transition-colors">
+                            {item.title}
+                          </h3>
+                          {/* Remove categories from here */}
+                        </div>
                       {/*display start and end date if available, otherwise display duration*/}
                       <div className="flex flex-col items-end gap-1 text-xs text-muted-foreground flex-shrink-0 ml-4">
                         {/* Start / End Date */}
@@ -405,7 +482,8 @@ const Blog17 = () => {
                         )}
                       </ul>
                     </div>
-                  </Link>
+                    </Link>
+                  </div>
                   <div className="h-6" />
                 </React.Fragment>
               ))
@@ -422,6 +500,28 @@ const Blog17 = () => {
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete "{projectToDelete?.title}". This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              disabled={deleting}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deleting ? 'Deleting...' : 'Delete'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 };

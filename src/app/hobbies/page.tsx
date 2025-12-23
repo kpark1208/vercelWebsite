@@ -132,7 +132,7 @@ export default function About() {
           <div className="flex flex-wrap justify-center gap-6">
             <a href="mailto:phjoon@umich.edu" className="flex items-center gap-2 hover:text-primary">
               <Mail className="w-5 h-5" />
-              <span>hyeonjap@andrew.cmu.edu</span>
+              <span>hyeonjae.park03@gmail.com</span>
             </a>
             <a href="https://github.com/kpark1208" className="flex items-center gap-2 hover:text-primary" target="_blank" rel="noreferrer">
               <Github className="w-5 h-5" />

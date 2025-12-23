@@ -1,16 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
 
-const supabase = createClient(supabaseUrl, supabaseServiceKey)
+// Initialize Supabase client (will be validated in each route handler)
+const supabase = supabaseUrl && supabaseServiceKey 
+  ? createClient(supabaseUrl, supabaseServiceKey)
+  : null
 
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
+    if (!supabase) {
+      return NextResponse.json(
+        { error: 'Server configuration error: Supabase credentials not found' },
+        { status: 500 }
+      )
+    }
+
     const body = await request.json()
     const { slug } = await params
     
@@ -72,5 +82,90 @@ export async function PUT(
   } catch (error) {
     console.error('Error in API route:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  try {
+    // Check if Supabase is configured
+    if (!supabase || !supabaseUrl || !supabaseServiceKey) {
+      console.error('Supabase configuration missing')
+      return NextResponse.json(
+        { error: 'Server configuration error: Supabase credentials not found' },
+        { status: 500 }
+      )
+    }
+
+    // Ensure params is resolved
+    let slug: string
+    try {
+      const resolvedParams = await params
+      slug = resolvedParams.slug
+    } catch (paramError) {
+      console.error('Error resolving params:', paramError)
+      return NextResponse.json(
+        { error: 'Invalid request parameters' },
+        { status: 400 }
+      )
+    }
+    
+    if (!slug || typeof slug !== 'string') {
+      return NextResponse.json(
+        { error: 'Slug parameter is required' },
+        { status: 400 }
+      )
+    }
+    
+    console.log('API: Deleting project with slug:', slug)
+
+    // Delete the project from Supabase
+    const { data, error } = await supabase
+      .from('projects')
+      .delete()
+      .eq('slug', slug)
+      .select()
+
+    if (error) {
+      console.error('Supabase error deleting project:', error)
+      return NextResponse.json(
+        { error: error.message || 'Failed to delete project' },
+        { status: 500 }
+      )
+    }
+
+    // Check if any rows were deleted
+    if (!data || data.length === 0) {
+      return NextResponse.json(
+        { error: 'Project not found' },
+        { status: 404 }
+      )
+    }
+
+    console.log('API: Delete successful for slug:', slug, 'Deleted:', data.length, 'row(s)')
+    return NextResponse.json(
+      { success: true, message: 'Project deleted successfully' },
+      { status: 200 }
+    )
+  } catch (error) {
+    // Catch any unexpected errors and ensure we always return JSON
+    console.error('Unexpected error in DELETE API route:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Internal server error'
+    const errorStack = error instanceof Error ? error.stack : undefined
+    
+    // Log full error details for debugging
+    if (errorStack) {
+      console.error('Error stack:', errorStack)
+    }
+    
+    return NextResponse.json(
+      { 
+        error: errorMessage,
+        details: process.env.NODE_ENV === 'development' ? errorStack : undefined
+      },
+      { status: 500 }
+    )
   }
 } 

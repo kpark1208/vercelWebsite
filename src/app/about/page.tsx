@@ -154,7 +154,7 @@ export default function About() {
             <div className="flex flex-wrap justify-center gap-6">
               <a href="mailto:hyeonjap@andrew.cmu.edu" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
                 <Mail className="h-5 w-5 text-primary" />
-                <span>hyeonjap@andrew.cmu.edu</span>
+                <span>hyeonjae.park03@gmail.com</span>
               </a>
               <a href="https://github.com/kpark1208" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
                 <Github className="h-5 w-5 text-primary" />
